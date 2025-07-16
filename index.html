@@ -11,27 +11,24 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <style>
-      #food-type-buttons::-webkit-scrollbar {
-        display: none;
-      }
-      #food-cards::-webkit-scrollbar {
-        display: none;
-      }
-    </style>
+    <style></style>
     <title>Document</title>
   </head>
   <body class="flex justify-center bg-gray-100">
     <div
-      class="container flex flex-col justify-center items-center mt-40 py-5 mx-4 px-5 rounded-md space-y-5 w-[300px] bg-white"
+      id="container"
+      class="flex flex-col justify-center items-center mt-40 py-5 mx-4 px-5 rounded-md space-y-5 w-[300px] bg-white"
     >
-      <div class="header flex flex-row justify-between items-center w-full">
+      <div
+        id="header"
+        class="flex flex-row justify-between items-center w-full"
+      >
         <div class="header-text flex flex-col space-y-1">
           <div class="user-name text-xl">Hello Fola</div>
           <p class="text-xs text-gray-500">What are you cooking today?</p>
         </div>
         <i
-          class="fa-solid fa-user text-xl p-3 border border-[#FFCE80] rounded-xl bg-[#FFCE80] text-black/60"
+          class="fa-solid fa-user text-xl p-3 border border-gray-200 rounded-xl bg-gray-200 text-black/60"
         ></i>
       </div>
       <div class="flex flex-row justify-around w-full items-center">
@@ -48,145 +45,40 @@
         </div>
         <i class="fa-solid fa-bookmark text-2xl text-gray-600"></i>
       </div>
-
+      <div id="category-title" class="text-md">Categories</div>
+      <div id="result" class="hidden"></div>
       <div
-        id="food-type-buttons"
-        class="flex flex-row space-x-1 overflow-x-auto whitespace-nowrap max-w-full"
-      >
-        <button
-          class="country-btn border border-[#129575] bg-[#129575] px-4 py-1 rounded-lg text-xs text-white"
-          value="all"
-        >
-          All
-        </button>
-        <button
-          class="country-btn border border-none px-4 py-1 rounded-lg text-xs"
-          value="asian"
-        >
-          Asian
-        </button>
-        <button
-          class="country-btn border-none px-4 py-1 rounded-lg text-xs"
-          value="chinese"
-        >
-          Chinese
-        </button>
-        <button
-          class="country-btn border-none px-4 py-1 rounded-lg text-xs"
-          value="italian"
-        >
-          Italian
-        </button>
-        <button
-          class="country-btn border-none px-4 py-1 rounded-lg text-xs"
-          value="fruit"
-        >
-          Fruit
-        </button>
-        <button
-          class="country-btn border-none px-4 py-1 rounded-lg text-xs"
-          value="vegetable"
-        >
-          Vegetable
-        </button>
-      </div>
+        id="buttons"
+        class="flex-wrap flex-col space-x-1 max-w-full bg-gray-100 rounded-lg"
+      ></div>
+      <div id="card-recipe" class="hidden"></div>
       <div
         id="food-cards"
-        class="flex flex-row space-x-2 overflow-x-auto whitespace-nowrap w-full"
+        class="flex flex-col space-x-2 overflow-x-auto whitespace-nowrap w-full"
       >
         <div
           id="food-card"
-          class="flex flex-col relative bg-gray-200 justify-center items-center rounded-xl space-y-8 mt-10 p-2"
+          class="flex-col relative bg-gray-200 justify-center items-center rounded-xl space-y-8 mt-10 p-4 hidden w-full cursor-pointer"
         >
           <img
+            id="food-card-image"
             src="https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg/small"
             alt="Meal image"
             class="absolute -top-10 w-20 h-20 rounded-full object-cover z-10"
           />
-          <div class="food-text-box z-20 mt-10">
-            <div class="food-name">Spaghetti</div>
-          </div>
-          <div
-            id="food-bottom"
-            class="flex flex-row justify-end items-center h-auto space-x-8"
-          >
-            <div class="flex flex-col">
-              <div class="time-head text-xs">Time</div>
-              <div class="time text-sm">15 mins</div>
-            </div>
-            <i class="fa-regular fa-bookmark"></i>
-          </div>
-        </div>
-        <div
-          id="food-card"
-          class="flex flex-col relative bg-gray-200 justify-center items-center rounded-xl space-y-8 mt-10 p-2"
-        >
-          <img
-            src="https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg/small"
-            alt="Meal image"
-            class="absolute -top-10 w-20 h-20 rounded-full object-cover z-10"
-          />
-          <div class="food-text-box z-20 mt-10">
-            <div class="food-name">Spaghetti</div>
-          </div>
-          <div
-            id="food-bottom"
-            class="flex flex-row justify-end items-center h-auto space-x-8"
-          >
-            <div class="flex flex-col">
-              <div class="time-head text-xs">Time</div>
-              <div class="time text-sm">15 mins</div>
-            </div>
-            <i class="fa-regular fa-bookmark"></i>
-          </div>
-        </div>
-        <div
-          id="food-card"
-          class="flex flex-col relative bg-gray-200 justify-center items-center rounded-xl space-y-8 mt-10 p-2"
-        >
-          <img
-            src="https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg/small"
-            alt="Meal image"
-            class="absolute -top-10 w-20 h-20 rounded-full object-cover z-10"
-          />
-          <div class="food-text-box z-20 mt-10">
-            <div class="food-name">Spaghetti</div>
-          </div>
-          <div
-            id="food-bottom"
-            class="flex flex-row justify-end items-center h-auto space-x-8"
-          >
-            <div class="flex flex-col">
-              <div class="time-head text-xs">Time</div>
-              <div class="time text-sm">15 mins</div>
-            </div>
-            <i class="fa-regular fa-bookmark"></i>
-          </div>
-        </div>
-        <div
-          id="food-card"
-          class="flex flex-col relative bg-gray-200 justify-center items-center rounded-xl space-y-8 mt-10 p-2"
-        >
-          <img
-            src="https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg/small"
-            alt="Meal image"
-            class="absolute -top-10 w-20 h-20 rounded-full object-cover z-10"
-          />
-          <div class="food-text-box z-20 mt-10">
-            <div class="food-name">Spaghetti</div>
-          </div>
+          <div id="food-name" class="z-20 mt-10">Spaghetti</div>
           <div
             id="food-bottom"
             class="flex flex-row justify-between items-center h-auto w-full space-x-8"
           >
-            <div class="flex flex-col">
-              <div class="time-head text-xs">Time</div>
-              <div class="time text-sm">15 mins</div>
-            </div>
-            <i class="fa-regular fa-bookmark"></i>
+            <i
+              class="fa-brands fa-youtube text-2xl text-red-600 cursor-pointer"
+            ></i>
+            <i class="fa-regular fa-bookmark cursor-pointer"></i>
           </div>
         </div>
       </div>
     </div>
+    <script src="app.js"></script>
   </body>
 </html>
