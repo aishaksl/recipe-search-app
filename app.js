@@ -253,7 +253,14 @@ saved.addEventListener("click", async (e) => {
   if (e.target.classList.contains("save")) {
     const card = e.target.closest("#food-card");
     const mealName = card.querySelector("#food-name").textContent.trim();
-    const saveButton = e.target;
+
+    const savedMeals = getSavedMealsFromLocalStorage() ?? [];
+
+    const updatedMeals = savedMeals.filter((meal) => meal.strMeal !== mealName);
+
+    localStorage.setItem(savedMealsKey, JSON.stringify(updatedMeals));
+
+    card.remove();
   }
 
   if (e.target.classList.contains("food-name")) {
@@ -274,8 +281,8 @@ saved.addEventListener("click", async (e) => {
 
 const savedMealsKey = "my-saved-meals";
 
-async function saveMealToLocalStorage(meal) {
-  const savedMeals = getSavedMealsFromLocalStorage() ?? [];
+function saveMealToLocalStorage(meal) {
+  const savedMeals = getSavedMealsFromLocalStorage() ?? []; // If the value on the left is null or undefined, it uses the value on the right.
 
   if (savedMeals.some((m) => m.idMeal === meal.idMeal)) {
     return;
