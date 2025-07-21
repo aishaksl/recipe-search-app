@@ -7,6 +7,11 @@ const result = document.querySelector("#result");
 const foodCardTemplate = foodCards.children.item(0);
 const cardRecipe = document.querySelector("#card-recipe");
 const header = document.querySelector("#header");
+const youtubeLink = document.querySelector("#youtube-link");
+const saved = document.querySelector("#saved");
+const savedButton = document.querySelector("#saved-button");
+const saveButton = document.querySelector(".save");
+const savedRecipe = document.querySelector("#saved-recipe");
 
 fetchCategories();
 
@@ -47,11 +52,6 @@ function addRecipe(meal, targetElement) {
 
   const recipeWrapper = document.createElement("div");
   recipeWrapper.className = "flex flex-col items-center";
-
-  const back = document.createElement("div");
-  back.textContent = "<";
-  back.className = "text-left w-full px-1 cursor-pointer";
-  recipeWrapper.appendChild(back);
 
   const foodTitle = document.createElement("div");
   foodTitle.textContent = meal.meals[0].strMeal;
@@ -99,7 +99,8 @@ function addRecipe(meal, targetElement) {
   videoLink.textContent = "YouTube";
   videoLink.target = "_blank";
   videoLink.className =
-    "text-white bg-red-400 my-4 p-3 border border-red-800 rounded-xl";
+    "text-white bg-red-700 my-4 p-3 border border-red-700 rounded-xl";
+  recipeWrapper.appendChild(videoLink);
 
   targetElement.appendChild(recipeWrapper);
 }
@@ -157,28 +158,134 @@ async function fetchExampleMealsByCategory(categoryName) {
       }
     });
     foodCards.appendChild(newFoodCard);
-
-    newFoodCard.addEventListener("click", async () => {
-      const mealDetailResponse = await (
-        await fetch(
-          `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`
-        )
-      ).json();
-
-      if (mealDetailResponse) {
-        header.style.display = "none";
-        buttons.style.display = "none";
-        categoryTitle.style.display = "none";
-        foodCards.style.display = "none";
-        header.style.display = "none";
-        cardRecipe.classList.remove("hidden");
-        cardRecipe.innerHTML = "";
-      } else {
-        cardRecipe.style.display = "flex";
-        return;
-      }
-
-      addRecipe(mealDetailResponse, cardRecipe);
-    });
   });
+}
+
+foodCards.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("food-name")) {
+    const mealName = e.target.textContent.trim();
+
+    const mealDetailResponse = await (
+      await fetch(
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${mealName}`
+      )
+    ).json();
+
+    if (mealDetailResponse.meals) {
+      header.style.display = "none";
+      buttons.style.display = "none";
+      categoryTitle.style.display = "none";
+      foodCards.style.display = "none";
+      header.style.display = "none";
+      cardRecipe.classList.remove("hidden");
+      cardRecipe.innerHTML = "";
+      addRecipe(mealDetailResponse, cardRecipe);
+    }
+  }
+
+  if (e.target.classList.contains("youtube-link")) {
+    const card = e.target.closest("#food-card");
+    const mealName = card.querySelector("#food-name").textContent.trim();
+
+    const meal = await (
+      await fetch(
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${mealName}`
+      )
+    ).json();
+
+    const url = meal.meals[0].strYoutube;
+    window.open(url, "_blank");
+  }
+
+  if (e.target.classList.contains("save")) {
+    const card = e.target.closest("#food-card");
+    const mealName = card.querySelector("#food-name").textContent.trim();
+    const saveButton = e.target;
+
+    const mealResponse = await (
+      await fetch(
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${mealName}`
+      )
+    ).json();
+    const meal = mealResponse.meals[0];
+
+    saveMealToLocalStorage(meal);
+
+    saveButton.classList.remove("fa-regular", "text-gray-600");
+    saveButton.classList.add("fa-solid", "text-black");
+  }
+});
+
+savedButton.addEventListener("click", () => {
+  header.style.display = "none";
+  buttons.style.display = "none";
+  categoryTitle.style.display = "none";
+  foodCards.style.display = "none";
+  cardRecipe.style.display = "none";
+  result.style.display = "none";
+
+  saved.classList.remove("hidden");
+
+  const meals = getSavedMealsFromLocalStorage();
+
+  meals.forEach((meal) => {
+    const foodCard = foodCardTemplate.cloneNode(true);
+
+    foodCard.style.display = "flex";
+
+    foodCard.childNodes.forEach((child) => {
+      if (child.id === "food-card-image") {
+        child.setAttribute("src", meal.strMealThumb);
+      } else if (child.id === "food-name") {
+        child.textContent = meal.strMeal;
+      } else if (child.id === "food-bottom") {
+        const saveIcon = child.querySelector(".save");
+        saveIcon.classList.remove("fa-regular", "text-gray-600");
+        saveIcon.classList.add("fa-solid", "text-black");
+      }
+    });
+
+    saved.appendChild(foodCard);
+  });
+});
+
+saved.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("save")) {
+    const card = e.target.closest("#food-card");
+    const mealName = card.querySelector("#food-name").textContent.trim();
+    const saveButton = e.target;
+  }
+
+  if (e.target.classList.contains("food-name")) {
+    const mealName = e.target.textContent.trim();
+    const mealDetailResponse = await (
+      await fetch(
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${mealName}`
+      )
+    ).json();
+
+    if (mealDetailResponse.meals) {
+      saved.style.display = "none";
+      savedRecipe.classList.remove("hidden");
+      addRecipe(mealDetailResponse, savedRecipe);
+    }
+  }
+});
+
+const savedMealsKey = "my-saved-meals";
+
+async function saveMealToLocalStorage(meal) {
+  const savedMeals = getSavedMealsFromLocalStorage() ?? [];
+
+  if (savedMeals.some((m) => m.idMeal === meal.idMeal)) {
+    return;
+  }
+
+  savedMeals.push(meal);
+
+  localStorage.setItem(savedMealsKey, JSON.stringify(savedMeals));
+}
+
+function getSavedMealsFromLocalStorage() {
+  return JSON.parse(localStorage.getItem(savedMealsKey));
 }

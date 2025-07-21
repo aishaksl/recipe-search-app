@@ -19,19 +19,13 @@
       id="container"
       class="flex flex-col justify-center items-center mt-40 py-5 mx-4 px-5 rounded-md space-y-5 w-[300px] bg-white"
     >
-      <div
-        id="header"
-        class="flex flex-row justify-between items-center w-full"
-      >
+      <div id="header" class="flex flex-row justify-center items-center w-full">
         <div class="header-text flex flex-col space-y-1">
-          <div class="user-name text-xl">Hello Fola</div>
+          <div class="user-name text-xl">Hello, there</div>
           <p class="text-xs text-gray-500">What are you cooking today?</p>
         </div>
-        <i
-          class="fa-solid fa-user text-xl p-3 border border-gray-200 rounded-xl bg-gray-200 text-black/60"
-        ></i>
       </div>
-      <div class="flex flex-row justify-around w-full items-center">
+      <div class="flex flex-row justify-between w-full items-center">
         <div
           class="flex flex-row items-center border py-3 px-3 border-gray-400 rounded-lg space-x-2"
         >
@@ -43,10 +37,16 @@
             placeholder="Search recipe"
           />
         </div>
-        <i class="fa-solid fa-bookmark text-2xl text-gray-600"></i>
+        <i
+          id="saved-button"
+          class="fa-solid fa-bookmark text-2xl text-gray-600 cursor-pointer"
+        ></i>
       </div>
       <div id="category-title" class="text-md">Categories</div>
       <div id="result" class="hidden"></div>
+      <div id="saved" class="hidden w-full"></div>
+      <div id="saved-recipe" class="hidden"></div>
+
       <div
         id="buttons"
         class="flex-wrap flex-col space-x-1 max-w-full bg-gray-100 rounded-lg"
@@ -54,11 +54,11 @@
       <div id="card-recipe" class="hidden"></div>
       <div
         id="food-cards"
-        class="flex flex-col space-x-2 overflow-x-auto whitespace-nowrap w-full"
+        class="flex flex-col space-y-2 overflow-x-auto whitespace-nowrap w-full"
       >
         <div
           id="food-card"
-          class="flex-col relative bg-gray-200 justify-center items-center rounded-xl space-y-8 mt-10 p-4 hidden w-full cursor-pointer"
+          class="flex-col relative bg-gray-200 justify-center items-center rounded-xl space-y-8 mt-10 p-4 hidden w-full"
         >
           <img
             id="food-card-image"
@@ -66,15 +66,15 @@
             alt="Meal image"
             class="absolute -top-10 w-20 h-20 rounded-full object-cover z-10"
           />
-          <div id="food-name" class="z-20 mt-10">Spaghetti</div>
+          <div id="food-name" class="food-name z-20 mt-10 cursor-pointer"></div>
           <div
             id="food-bottom"
-            class="flex flex-row justify-between items-center h-auto w-full space-x-8"
+            class="flex flex-row justify-around items-center h-auto w-full space-x-8"
           >
             <i
-              class="fa-brands fa-youtube text-2xl text-red-600 cursor-pointer"
+              class="youtube-link fa-brands fa-youtube text-2xl text-red-600 cursor-pointer"
             ></i>
-            <i class="fa-regular fa-bookmark cursor-pointer"></i>
+            <i class="save fa-regular fa-bookmark cursor-pointer"></i>
           </div>
         </div>
       </div>
